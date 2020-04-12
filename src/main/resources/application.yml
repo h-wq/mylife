@@ -2,7 +2,7 @@ spring:
   application:
     name: mylife
   profiles:
-    active: online
+    active: dev
 
 server:
   port: 8080
