@@ -71,7 +71,7 @@ function smart_run() {
     if [ "$_hostname" == "$host" ] || [ "$host" == "localhost" ] ; then
         eval "$_command"
     else
-        ssh root@$host /bin/bash <<EOF
+        sshpass -p 432321webWEB ssh root@$host /bin/bash <<EOF
         $_command
 EOF
     fi
