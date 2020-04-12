@@ -52,7 +52,6 @@ packaging $service
 
 #######################################
 "
-    cd $service
     mvn clean package -DskipTests=true
     ret=$?
     if [ $ret != 0 ]; then
