@@ -4,6 +4,31 @@ MODULE=$1
 env=$2
 index=$3
 
+function usage() {
+    echo "Usage: $0 module env index"
+    if [ -n "$ALL_MODULES" ]; then
+        echo "       modules: [${ALL_MODULES[@]}] "
+    fi
+}
+
+if [ "$MODULE" == "" ] || [ "$env" == "" ] || [ "$index" == "" ]; then
+    usage
+    exit 1
+fi
+
+SERVICE_FILE=deploy/services
+if [ ! -s "$SERVICE_FILE" ]; then
+    echo "services file not found at $SERVICE_FILE"
+    exit 1
+fi
+
+ALL_MODULES=( $(cat $SERVICE_FILE) )
+
+if ! [ -d $MODULE ] && [ "$MODULE" != "mylife" ]; then
+    usage
+    exit 1
+fi
+
 function parse_locations() {
     local _module=$1
     local _env=$2
@@ -38,26 +63,6 @@ parse_locations $MODULE $env
 if [ "$host" == "" ]; then
     echo "skip deploy to host $index!"
     exit 0
-fi
-
-SERVICE_FILE=deploy/services
-if [ ! -s "$SERVICE_FILE" ]; then
-    echo "services file not found at $SERVICE_FILE"
-    exit 1
-fi
-
-ALL_MODULES=( $(cat $SERVICE_FILE) )
-
-function usage() {
-    echo "Usage: $0 [all ${ALL_MODULES[@]}]"
-}
-
-if [ "$MODULE" == "" ]; then
-    MODULE="all"
-fi
-if [ "$MODULE" != "all" ] && ! [ -d $MODULE ] && [ "$MODULE" != "mylife" ]; then
-    usage
-    exit 1
 fi
 
 function smart_run() {
