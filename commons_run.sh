@@ -21,7 +21,7 @@ APP="$2"
 COMMAND="$3"
 ENV="$4"
 
-git checkout $env
+git checkout $ENV
 
 if [ "$ENV" != "" ]; then
     shift 4
